@@ -1,21 +1,11 @@
 import React from "react";
-<<<<<<< HEAD
-
-const Details = () => {
-  return <h1>hi!</h1>;
-};
-
-export default Details;
-=======
 import pet from "@frontendmasters/pet";
-import { navigate } from "@reach/router";
 import Carousel from "./Carousel";
-import Modal from "./Modal";
 import ErrorBoundary from "./ErrorBoundary";
 import ThemeContext from "./ThemeContext";
 
 class Details extends React.Component {
-  state = { loading: true, showModal: false };
+  state = { loading: true };
   componentDidMount() {
     pet
       .animal(this.props.id)
@@ -24,9 +14,7 @@ class Details extends React.Component {
           url: animal.url,
           name: animal.name,
           animal: animal.type,
-          location: `${animal.contact.address.city}, ${
-            animal.contact.address.state
-          }`,
+          location: `${animal.contact.address.city}, ${animal.contact.address.state}`,
           description: animal.description,
           media: animal.photos,
           breed: animal.breeds.primary,
@@ -35,22 +23,12 @@ class Details extends React.Component {
       })
       .catch(err => this.setState({ error: err }));
   }
-  toggleModal = () => this.setState({ showModal: !this.state.showModal });
-  adopt = () => navigate(this.state.url);
   render() {
     if (this.state.loading) {
       return <h1>loading … </h1>;
     }
 
-    const {
-      animal,
-      breed,
-      location,
-      description,
-      media,
-      name,
-      showModal
-    } = this.state;
+    const { animal, breed, location, description, media, name } = this.state;
 
     return (
       <div className="details">
@@ -60,24 +38,10 @@ class Details extends React.Component {
           <h2>{`${animal} — ${breed} — ${location}`}</h2>
           <ThemeContext.Consumer>
             {([theme]) => (
-              <button
-                onClick={this.toggleModal}
-                style={{ backgroundColor: theme }}
-              >
-                Adopt {name}
-              </button>
+              <button style={{ backgroundColor: theme }}>Adopt {name}</button>
             )}
           </ThemeContext.Consumer>
           <p>{description}</p>
-          {showModal ? (
-            <Modal>
-              <h1>Would you like to adopt {name}?</h1>
-              <div className="buttons">
-                <button onClick={this.adopt}>Yes</button>
-                <button onClick={this.toggleModal}>No, I am a monster</button>
-              </div>
-            </Modal>
-          ) : null}
         </div>
       </div>
     );
@@ -91,4 +55,3 @@ export default function DetailsErrorBoundary(props) {
     </ErrorBoundary>
   );
 }
->>>>>>> 0629c508119c5595c0353ce3599ad138afed8fa3
